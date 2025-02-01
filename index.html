@@ -160,6 +160,10 @@
           tax = (400000 * 0.05) + (400000 * 0.1) + (400000 * 0.15) + (400000 * 0.2) + (400000 * 0.25) ((income - 2400000 * 0.3)
         }
 
+        if( income > 5000000 ) {
+          tax = tax + (tax * 0.1)
+        }
+
         // Add cess (4%) on the total tax (including surcharge)
         const cess = tax * 0.04;
         tax = tax + cess;
