@@ -179,7 +179,7 @@
         const cess = tax * 0.04;
         tax = tax + cess;
 
-        const effectiveRate = ((tax / income) * 100).toFixed(2);
+        const effectiveRate = (tax / income) * 100;
         return { tax, cess: Math.round(cess), effectiveRate };
       }
 
