@@ -125,48 +125,37 @@
   </div>
 
   <script>
-   function calculateTax(income) {
-  // Apply standard deduction of ₹75,000
-  const taxableIncome = Math.max(income - 75000, 0);
+ function calculateTax(income) {
+      if (income <= 1200000) return { tax: 0, effectiveRate: 0 };
 
-  let tax = 0;
+      let tax = 0;
 
-  if (taxableIncome <= 1200000) {
-    tax = 0;
-  } else {
-    if (taxableIncome > 2400000) {
-      tax += (taxableIncome - 2400000) * 0.30;
-      taxableIncome = 2400000;
+      if (income > 2400000) {
+        tax += (income - 2400000) * 0.30;
+        income = 2400000;
+      }
+      if (income > 2000000) {
+        tax += (income - 2000000) * 0.25;
+        income = 2000000;
+      }
+      if (income > 1600000) {
+        tax += (income - 1600000) * 0.20;
+        income = 1600000;
+      }
+      if (income > 1200000) {
+        tax += (income - 1200000) * 0.15;
+        income = 1200000;
+      }
+      if (income > 800000) {
+        tax += (income - 800000) * 0.10;
+        income = 800000;
+      }
+      if (income > 400000) {
+        tax += (income - 400000) * 0.05;
+      }
+      const effectiveRate = ((tax / income) * 100).toFixed(2);
+      return { tax, effectiveRate };
     }
-    if (taxableIncome > 2000000) {
-      tax += (taxableIncome - 2000000) * 0.25;
-      taxableIncome = 2000000;
-    }
-    if (taxableIncome > 1600000) {
-      tax += (taxableIncome - 1600000) * 0.20;
-      taxableIncome = 1600000;
-    }
-    if (taxableIncome > 1200000) {
-      tax += (taxableIncome - 1200000) * 0.15;
-      taxableIncome = 1200000;
-    }
-    if (taxableIncome > 800000) {
-      tax += (taxableIncome - 800000) * 0.10;
-      taxableIncome = 800000;
-    }
-    if (taxableIncome > 400000) {
-      tax += (taxableIncome - 400000) * 0.05;
-    }
-  }
-
-  // Add 4% health and education cess
-  const cess = tax * 0.04;
-  const totalTax = tax + cess;
-
-  const effectiveRate = ((totalTax / income) * 100).toFixed(2);
-  return { tax: totalTax, effectiveRate };
-}
-
 
     function formatCurrency(amount) {
       return new Intl.NumberFormat('en-IN', {
