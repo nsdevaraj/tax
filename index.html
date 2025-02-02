@@ -42,6 +42,7 @@
         border-radius: 8px;
         font-size: 16px;
         margin-bottom: 16px;
+        box-sizing: border-box;
       }
       button {
         width: 100%;
@@ -97,6 +98,14 @@
         <label for="income">Annual Income (₹)</label>
         <input type="text" id="income" placeholder="Enter your annual income" />
       </div>
+      <div>
+        <label for="income">Employer PF (₹)</label>
+        <input type="text" id="epf" placeholder="Enter your annual PF contribution" />
+      </div>
+      <div>
+        <label for="income">Gratuity Deduction (₹)</label>
+        <input type="text" id="gratuity" placeholder="Enter your annual Gratuity deduction" />
+      </div>
       <button onclick="handleCalculate()">Calculate Tax</button>
 
       <div id="result" class="result" style="display: none">
@@ -129,8 +138,8 @@
     </div>
 
     <script>
-      function calculateTax(income) {
-        income = income - 75000;
+      function calculateTax(income,epf,gratuity) {
+        income = income - 75000- epf - gratuity;
         if (income <= 1200000) return { tax: 0, effectiveRate: 0 };
 
         let tax = 0;
@@ -185,10 +194,14 @@
 
       function handleCalculate() {
         const incomeInput = document.getElementById("income").value;
-        const incomeValue = parseFloat(incomeInput.replace(/,/g, ""));
+        const epfInput = document.getElementById("epf").value;
+        const gratuityInput = document.getElementById("gratuity").value;
+        const incomeValue = parseFloat(incomeInput.replace(/,/g, "")); 
+        const epfValue = parseFloat(epfInput.replace(/,/g, ""));
+        const gratuityValue = parseFloat(gratuityInput.replace(/,/g, ""));
 
-        if (!isNaN(incomeValue)) {
-          const result = calculateTax(incomeValue);
+        if (!isNaN(incomeValue) && !isNaN(epfValue) && !isNaN(gratuityValue) ) {
+          const result = calculateTax(incomeValue,epfValue,gratuityValue); 
           document.getElementById("taxAmount").textContent = formatCurrency(
             result.tax
           );
