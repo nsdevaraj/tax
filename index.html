@@ -100,11 +100,21 @@
       </div>
       <div>
         <label for="income">Employer PF (₹)</label>
-        <input type="text" id="epf" placeholder="Enter your annual PF contribution" />
+        <input
+          type="text"
+          id="epf"
+          placeholder="Enter your annual PF contribution"
+          value="20000"
+        />
       </div>
       <div>
         <label for="income">Gratuity Deduction (₹)</label>
-        <input type="text" id="gratuity" placeholder="Enter your annual Gratuity deduction" />
+        <input
+          type="text"
+          id="gratuity"
+          placeholder="Enter your annual Gratuity deduction"
+          value="30000"
+        />
       </div>
       <button onclick="handleCalculate()">Calculate Tax</button>
 
@@ -138,8 +148,9 @@
     </div>
 
     <script>
-      function calculateTax(income,epf,gratuity) {
-        income = income - 75000- epf - gratuity;
+      function calculateTax(income, epf, gratuity) {
+        ctc = income;
+        income = income - 75000 - epf - gratuity;
         if (income <= 1200000) return { tax: 0, effectiveRate: 0 };
 
         let tax = 0;
@@ -174,13 +185,13 @@
         }
         if (income > 400000) {
           tax += (income - 400000) * 0.05;
-        } 
+        }
 
         // Add cess (4%) on the total tax (including surcharge)
         const cess = tax * 0.04;
         tax = tax + cess;
 
-        const effectiveRate = ((tax / income) * 100).toFixed(2);
+        const effectiveRate = ((tax / ctc) * 100).toFixed(2);
         return { tax, cess: Math.round(cess), effectiveRate };
       }
 
@@ -196,12 +207,12 @@
         const incomeInput = document.getElementById("income").value;
         const epfInput = document.getElementById("epf").value;
         const gratuityInput = document.getElementById("gratuity").value;
-        const incomeValue = parseFloat(incomeInput.replace(/,/g, "")); 
+        const incomeValue = parseFloat(incomeInput.replace(/,/g, ""));
         const epfValue = parseFloat(epfInput.replace(/,/g, ""));
         const gratuityValue = parseFloat(gratuityInput.replace(/,/g, ""));
 
-        if (!isNaN(incomeValue) && !isNaN(epfValue) && !isNaN(gratuityValue) ) {
-          const result = calculateTax(incomeValue,epfValue,gratuityValue); 
+        if (!isNaN(incomeValue) && !isNaN(epfValue) && !isNaN(gratuityValue)) {
+          const result = calculateTax(incomeValue, epfValue, gratuityValue);
           document.getElementById("taxAmount").textContent = formatCurrency(
             result.tax
           );
